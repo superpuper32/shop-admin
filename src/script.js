@@ -1,61 +1,69 @@
+import './styles.scss';
 import data from './data.js';
-import fields from './fields.js'
+import { fields } from "./fields.js";
 
 class SortableTable {
   constructor(tableRows, fields) {
     this.tableRows = tableRows;
     this.fields = fields;
 
-    this.render()
+    this.render();
   }
 
   render() {
-    this.elem = document.createElement('table');
-    
-    // tablehead
-    let tHead = document.createElement('thead');
-    let tHeadRow = document.createElement('tr');
-    
+    this.elem = document.createElement("div");
+    this.elem.className = "sortable-table";
+
+    this.renderHeader();
+    this.renderBody();
+  }
+
+  renderHeader() {
+    let header = document.createElement("div");
+    header.classList.add("sortable-table__header", "sortable-table__row");
+
     for (let field in this.fields) {
-      let th = document.createElement('th');
-      th.innerHTML = this.fields[field].title;
-      tHeadRow.append(th);
+      let cell = document.createElement("div");
+      cell.classList.add("sortable-table__cell");
+      cell.innerHTML = `<span>${this.fields[field].title}</span>`;
+      header.append(cell);
     }
-    tHead.append(tHeadRow);
-    this.elem.append(tHead);
 
-    // fill the table with this.tableRows
-    // tablebody
-    let tBody = document.createElement('tbody');
+    this.elem.append(header);
+  }
+
+  renderBody() {
+    let body = document.createElement("div");
+    body.className = "sortable-table__body";
     
-    for (let row of this.tableRows) {
-      let tr = document.createElement('tr');
-
-        for (let field in this.fields) {
-          let td = document.createElement('td');
-          td.innerHTML = this.fields[field].render(row[field]);
-          tr.append(td);
-        }
-
-      tBody.append(tr);
+    for (let tableRow of this.tableRows) {
+      let row = document.createElement('a');
+      row.className = 'sortable-table__row';
+      
+      for (let field in this.fields) {
+        let cell = document.createElement("div");
+        cell.classList.add("sortable-table__cell");
+        cell.innerHTML = `${this.fields[field].render(tableRow[field])}`;
+        row.append(cell);
+      }
+      
+      body.append(row);
     }
-
-    this.elem.append(tBody);
+    
+    this.elem.append(body);
   }
 
   sort(fieldName) {
-    // reorder this.tableRows
-    // re-fill the table
     if (!this.fields[fieldName].compare) return;
-
+    
     this.tableRows.sort((a, b) => {
       return this.fields[fieldName].compare(a[fieldName], b[fieldName]);
     });
-
-    this.render()
+    
+    this.render();
   }
 }
 
 let table = new SortableTable(data, fields);
-table.sort('price');
+table.sort('quantity');
 document.body.append(table.elem);
