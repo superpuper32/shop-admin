@@ -6,11 +6,11 @@ class SortableTable {
   constructor(tableRows, fields) {
     this.tableRows = tableRows;
     this.fields = fields;
-    
+
     this.order = {
-      field: 'title',
+      field: "title",
       direction: 1
-    }
+    };
 
     this.render();
   }
@@ -18,36 +18,45 @@ class SortableTable {
   render() {
     this.elem = document.createElement("div");
     this.elem.className = "sortable-table";
-    
+
     let header = document.createElement("div");
-    header.setAttribute('data-elem', 'header');
+    header.setAttribute("data-elem", "header");
     header.className = "sortable-table__header sortable-table__row";
-    header.insertAdjacentHTML('beforeend', this.renderHeader());
-    
+    header.insertAdjacentHTML("beforeend", this.renderHeader());
+
     this.elem.append(header);
-    
-    
+
     this.renderBody(this.tableRows);
+    this.elem.addEventListener(
+      "click",
+      event =>
+        event.target.closest(".sortable-table__header .sortable-table__cell") &&
+        this.onHeaderClick(event)
+    );
   }
 
   renderHeader() {
-    
     let content = ``;
 
     for (let name in this.fields) {
       let field = fields[name];
-      let title = `<span>${field.title.slice(0,1).toUpperCase() + field.title.slice(1)}</span>`;
-      
+      let title = `<span>${field.title.slice(0, 1).toUpperCase() +
+        field.title.slice(1)}</span>`;
+
       if (this.order.field === name) {
         title += `<span class="sortable-table__arrow">
-          <span class="sortable-table__arrow_${this.order.direction === 1 ? 'asc' : 'desc'}"></span>
-        </span>`
+          <span class="sortable-table__arrow_${
+            this.order.direction === 1 ? "asc" : "desc"
+          }"></span>
+        </span>`;
       }
 
-      content += `<div class="sortable-table__cell" data-name="${name}" ${field.compare ? 'data-sortable' : ''}>${title}</div>`
+      content += `<div class="sortable-table__cell" data-name="${name}" ${
+        field.compare ? "data-sortable" : ""
+      }>${title}</div>`;
     }
 
-  return content;  
+    return content;
   }
 
   renderBody(rows) {
@@ -62,7 +71,7 @@ class SortableTable {
         let cell = document.createElement("div");
         cell.classList.add("sortable-table__cell");
         cell.innerHTML = `${this.fields[field].render(tableRow[field])}`;
-        
+
         row.append(cell);
       }
 
@@ -72,34 +81,47 @@ class SortableTable {
     this.elem.append(body);
   }
 
-  sort(fieldName) {
-    if (!this.fields[fieldName].compare) return;
-    
-    let rowsArray = Array.from(this.tableRows);
-    // console.log(this.elem);
-    // console.log(rowsArray[0]);
-    let compare = (a, b) => {
-      return this.fields[fieldName].compare(a[fieldName], b[fieldName]);
+  onHeaderClick(event) {
+    let sortHeader = event.target.closest(".sortable-table__cell");
+    if (!("sortable" in sortHeader.dataset)) return;
+
+    let field = sortHeader.dataset.name;
+
+    let direction;
+    if (field === this.order.field) {
+      direction = -this.order.direction;
+    } else {
+      direction = 1;
     }
-    
+
+    this.sort({
+      field,
+      direction
+    });
+  }
+
+  sort(order = this.order) {
+    let sortArrowElem = this.elem.querySelector(".sortable-table__arrow");
+    let headerElem = this.elem.querySelector(`[data-name="${order.field}"]`);
+    headerElem.append(sortArrowElem);
+    sortArrowElem.firstElementChild.className = `sortable-table__arrow_${
+      order.direction === 1 ? "asc" : "desc"
+    }`;
+
+    this.order = order;
+
+    let rowsArray = Array.from(this.tableRows);
+
+    let compare = (a, b) =>
+      this.fields[order.field].compare(a[order.field], b[order.field]) *
+      order.direction;
+
     rowsArray.sort(compare);
-    
-    // console.log(rowsArray[0]);
-    // this.elem.prepend(...rowsArray);
+
     this.elem.lastElementChild.remove();
     this.renderBody(rowsArray);
   }
 }
 
-document.addEventListener('click', function(e) {
-  let target = e.target;
-  if (!target.dataset.name) return;
-  // console.log(target.dataset.name);
-  table.sort(target.dataset.name);
-});
-
 let table = new SortableTable(data, fields);
-// table.sort("quantity");
 document.body.append(table.elem);
-// console.log(table.elem.lastElementChild);
-
