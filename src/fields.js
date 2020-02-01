@@ -1,13 +1,13 @@
 let fields = {
   images: {
-    title: "Image",
+    title: "image",
     render(src) {
       return `<img class="sortable-table__image" src="${src[0].url}">`;
     },
     compare: null
   },
   title: {
-    title: "Name",
+    title: "name",
     render(text) {
       return text;
     },
@@ -17,14 +17,14 @@ let fields = {
     }
   },
   subcategory: {
-    title: "Category",
+    title: "category",
     render(text) {
       return text.split('-').map(name => name.slice(0, 1).toUpperCase() + name.slice(1)).join(' ');
     },
     compare: null
   },
   quantity: {
-    title: "Quantity",
+    title: "quantity",
     render(number) {
       return number;
     },
@@ -33,7 +33,7 @@ let fields = {
     }
   },
   price: {
-    title: "Price",
+    title: "price",
     render(price) {
       return `&#36;${price}`;
     },
@@ -42,7 +42,7 @@ let fields = {
     }
   },
   discount: {
-    title: "Sales",
+    title: "sales",
     render(number) {
       return number;
     },
