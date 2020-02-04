@@ -41,7 +41,7 @@ let fields = {
       return value1 - value2;
     }
   },
-  discount: {
+  sales: {
     title: "sales",
     render(number) {
       return number;

@@ -1,11 +1,9 @@
 import './styles.scss';
-import data from "./data.js";
 import { fields } from "./fields.js";
 import "babel-polyfill";
 
 class SortableTable {
-  constructor(tableRows, fields) {
-    this.tableRows = tableRows;
+  constructor(fields) {
     this.fields = fields;
 
     this.order = {
@@ -112,7 +110,7 @@ class SortableTable {
     });
   }
 
-  sort(order = this.order) {
+  async sort(order = this.order) {
     let sortArrowElem = this.elem.querySelector(".sortable-table__arrow");
     let headerElem = this.elem.querySelector(`[data-name="${order.field}"]`);
     headerElem.append(sortArrowElem);
@@ -122,7 +120,9 @@ class SortableTable {
 
     this.order = order;
 
-    let rowsArray = Array.from(this.tableRows);
+    let rows = await this.loadRows();
+
+    let rowsArray = Array.from(rows);
 
     let compare = (a, b) =>
       this.fields[order.field].compare(a[order.field], b[order.field]) *
@@ -135,5 +135,5 @@ class SortableTable {
   }
 }
 
-let table = new SortableTable(data, fields);
+let table = new SortableTable(fields);
 document.body.append(table.elem);
