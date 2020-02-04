@@ -18,8 +18,8 @@ let fields = {
   },
   subcategory: {
     title: "category",
-    render(text) {
-      return text.split('-').map(name => name.slice(0, 1).toUpperCase() + name.slice(1)).join(' ');
+    render(subcategory) {
+      return subcategory.category.title;
     },
     compare: null
   },

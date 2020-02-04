@@ -1,6 +1,7 @@
 import './styles.scss';
 import data from "./data.js";
 import { fields } from "./fields.js";
+import "babel-polyfill";
 
 class SortableTable {
   constructor(tableRows, fields) {
@@ -15,7 +16,7 @@ class SortableTable {
     this.render();
   }
 
-  render() {
+  async render() {
     this.elem = document.createElement("div");
     this.elem.className = "sortable-table";
 
@@ -26,7 +27,9 @@ class SortableTable {
 
     this.elem.append(header);
 
-    this.renderBody(this.tableRows);
+    let rows = await this.loadRows();
+
+    this.renderBody(rows);
     this.elem.addEventListener(
       "click",
       event =>
@@ -57,6 +60,15 @@ class SortableTable {
     }
 
     return content;
+  }
+
+  async loadRows() {
+    
+    let response = await fetch('https://course-js.javascript.ru/api/dashboard/bestsellers');
+    
+    let products = await response.json();
+    
+    return products;
   }
 
   renderBody(rows) {
