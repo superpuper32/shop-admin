@@ -1,3 +1,5 @@
+import escapeHtml from '../lib/escape-html.js';
+
 let fields = {
   images: {
     title: "image",
@@ -8,8 +10,8 @@ let fields = {
   },
   title: {
     title: "name",
-    render(text) {
-      return text;
+    render(title) {
+      return escapeHtml(String(title))
     },
     compare(value1, value2) {
       return value1 > value2 ? 1 :
@@ -19,14 +21,14 @@ let fields = {
   subcategory: {
     title: "category",
     render(subcategory) {
-      return subcategory.category.title;
+      return `<span>${escapeHtml(subcategory.category.title)}</span>`;
     },
     compare: null
   },
   quantity: {
     title: "quantity",
-    render(number) {
-      return number;
+    render(quantity) {
+      return escapeHtml(String(quantity))
     },
     compare(value1, value2) {
       return value1 - value2;
@@ -43,8 +45,8 @@ let fields = {
   },
   sales: {
     title: "sales",
-    render(number) {
-      return number;
+    render(sales) {
+      return escapeHtml(String(sales))
     },
     compare(value1, value2) {
       return value1 - value2;
