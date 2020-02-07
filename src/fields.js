@@ -1,4 +1,5 @@
 import escapeHtml from '../lib/escape-html.js';
+import formatMoney from '../lib/format-money.js';
 
 let fields = {
   images: {
@@ -37,7 +38,7 @@ let fields = {
   price: {
     title: "price",
     render(price) {
-      return `&#36;${price}`;
+      return `$${formatMoney(+price)}`;
     },
     compare(value1, value2) {
       return value1 - value2;
