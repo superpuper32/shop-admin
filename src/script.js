@@ -1,5 +1,6 @@
 import './styles.scss';
 import { fields } from "./fields.js";
+import createElement from "../lib/create-element.js";
 import "babel-polyfill";
 
 class SortableTable {
@@ -15,15 +16,11 @@ class SortableTable {
   }
 
   async render() {
-    this.elem = document.createElement("div");
-    this.elem.className = "sortable-table";
-
-    let header = document.createElement("div");
-    header.setAttribute("data-elem", "header");
-    header.className = "sortable-table__header sortable-table__row";
-    header.insertAdjacentHTML("beforeend", this.renderHeader());
-
-    this.elem.append(header);
+    this.elem = createElement(`<div class="sortable-table">
+      <div data-elem="header" class="sortable-table__header sortable-table__row">
+        ${this.renderHeader()}
+      </div>
+    </div>`);
 
     let rows = await this.loadRows();
 
