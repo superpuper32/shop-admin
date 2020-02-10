@@ -11,12 +11,13 @@ $gray-dark: #323c47;
 body {
   margin: 0;
   font : {
-    family: 'Montserrat', sans-serif;
+    family: "Montserrat", sans-serif;
     size: 16px;
   }
 }
 
-h1, h2 {
+h1,
+h2 {
   color: $primary-color;
 }
 
@@ -61,7 +62,7 @@ h1, h2 {
 .sortable-table {
   background-color: $white;
   max-width: 100%;
-  border-radius: .25rem;
+  border-radius: 0.25rem;
   margin-bottom: 2.5rem;
   overflow: hidden;
   box-shadow: 6px 0 18px rgba(0, 0, 0, 0.06);
@@ -102,7 +103,7 @@ h1, h2 {
   }
 
   &__arrow {
-    padding: .5rem;
+    padding: 0.5rem;
     display: -webkit-inline-box;
     display: inline-flex;
     cursor: pointer;
@@ -111,14 +112,14 @@ h1, h2 {
       width: 0;
       height: 0;
       border-style: solid;
-      border-width: 0 .25rem .25rem .25rem;
+      border-width: 0 0.25rem 0.25rem 0.25rem;
       border-color: transparent transparent $gray transparent;
     }
     &_asc {
       width: 0;
       height: 0;
       border-style: solid;
-      border-width: .25rem .25rem 0 .25rem;
+      border-width: 0.25rem 0.25rem 0 0.25rem;
       border-color: $gray transparent transparent transparent;
     }
   }
@@ -126,7 +127,43 @@ h1, h2 {
   &__image {
     height: 3rem;
     max-width: 100%;
-    padding: .25rem;
+    padding: 0.25rem;
     border: 1px solid $gray;
+  }
+}
+
+.notification {
+  background-color: #192a3e;
+  opacity: 0.8;
+  border-radius: 4px;
+  position: fixed;
+  right: 75px;
+  bottom: 75px;
+
+  &_success {
+    .notification__content {
+      padding: 16px 24px 16px 64px;
+      font-size: 1rem;
+      line-height: 20px;
+      color: #fff;
+      position: relative;
+
+      &:after {
+        content: "";
+        position: absolute;
+        left: 24px;
+        top: 50%;
+        width: 24px;
+        height: 24px;
+        -webkit-transform: translate(0, -50%);
+        transform: translate(0, -50%);
+        background: url(../assets/images/success.svg) center no-repeat;
+      }
+    }
+  }
+
+  .show {
+    display: block;
+    animation: fadeIn 0.3s linear;
   }
 }
