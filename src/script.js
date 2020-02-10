@@ -1,7 +1,10 @@
-import './styles.scss';
+import "./styles.scss";
+import fetchJson from "../lib/fetch-json.js";
 import { fields } from "./fields.js";
 import createElement from "../lib/create-element.js";
 import "babel-polyfill";
+
+import { ErrorNotification } from "../components/notification/index.js";
 
 class SortableTable {
   constructor(fields) {
@@ -58,11 +61,10 @@ class SortableTable {
   }
 
   async loadRows() {
-    
-    let response = await fetch('https://course-js.javascript.ru/api/dashboard/bestsellers');
-    
-    let products = await response.json();
-    
+    let products = await fetchJson(
+      "https://course-js.javascript.ru/api/dashboard/bestsellers"
+    );
+
     return products;
   }
 
@@ -100,7 +102,6 @@ class SortableTable {
     } else {
       direction = 1;
     }
-
     this.sort({
       field,
       direction
