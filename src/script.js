@@ -4,8 +4,6 @@ import { fields } from "./fields.js";
 import createElement from "../lib/create-element.js";
 import "babel-polyfill";
 
-import { ErrorNotification } from "../components/notification/index.js";
-
 class SortableTable {
   constructor(fields) {
     this.fields = fields;
