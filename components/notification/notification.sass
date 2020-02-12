@@ -1,0 +1,30 @@
+.notification
+    background-color: #192a3e
+    opacity: 0.8
+    border-radius: 4px
+    position: fixed
+    right: 75px
+    bottom: 75px
+
+    &_success
+        .notification__content
+            padding: 16px 24px 16px 64px
+            font-size: 1rem
+            line-height: 20px
+            color: #fff
+            position: relative
+
+        &:after
+            content: ""
+            position: absolute
+            left: 24px
+            top: 50%
+            width: 24px
+            height: 24px
+            -webkit-transform: translate(0, -50%)
+            transform: translate(0, -50%)
+            background: url(../assets/images/success.svg) center no-repeat
+
+    .show
+        display: block
+        animation: fadeIn 0.3s linear

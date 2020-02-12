@@ -1,0 +1,59 @@
+@import "./helpers/variables";
+@import "../components/sortable-table/sortable-table.sass";
+@import "../components/tooltip/tooltip.sass";
+@import "../components/notification/notification.sass";
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font : {
+    family: "Montserrat", sans-serif;
+    size: 16px;
+  }
+}
+
+h1,
+h2 {
+  color: $primary-color;
+}
+
+.main {
+  display: grid;
+  grid-template-columns: 16rem 1fr;
+  grid-template-rows: minmax(100vh, auto);
+  grid-template-areas: "sidebar content";
+}
+
+.sidebar {
+  grid-area: sidebar;
+  background-color: $white;
+  padding: 2rem;
+  box-shadow: 6px 0 18px rgba(0, 0, 0, 0.06);
+  position: sticky;
+}
+
+.page-title {
+  font : {
+    size: 2.5rem;
+    weight: 600;
+  }
+}
+
+.content {
+  grid-area: content;
+  background-color: $bg;
+  padding: 2rem 3rem;
+}
+
+.block-title {
+  font : {
+    size: 2rem;
+    weight: 600;
+  }
+  line-height: 2.5rem;
+  color: $primary-color;
+  margin: 3.5rem 0 2rem;
+}

@@ -1,4 +1,4 @@
-import "./styles.scss";
+import "../styles/styles.scss";
 import "babel-polyfill";
 import "../components/tooltip/index.js";
 import fetchJson from "../lib/fetch-json.js";
