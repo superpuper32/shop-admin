@@ -1,8 +1,9 @@
 import "./styles.scss";
-import fetchJson from "../lib/fetch-json.js";
-import { fields } from "./fields.js";
-import createElement from "../lib/create-element.js";
 import "babel-polyfill";
+import "../components/tooltip/index.js";
+import fetchJson from "../lib/fetch-json.js";
+import createElement from "../lib/create-element.js";
+import { fields } from "./fields.js";
 
 class SortableTable {
   constructor(fields) {

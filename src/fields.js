@@ -1,5 +1,5 @@
-import escapeHtml from '../lib/escape-html.js';
-import formatMoney from '../lib/format-money.js';
+import escapeHtml from "../lib/escape-html.js";
+import formatMoney from "../lib/format-money.js";
 
 let fields = {
   images: {
@@ -12,24 +12,30 @@ let fields = {
   title: {
     title: "name",
     render(title) {
-      return escapeHtml(String(title))
+      return escapeHtml(String(title));
     },
     compare(value1, value2) {
-      return value1 > value2 ? 1 :
-        value1 == value2 ? 0 : -1;
+      return value1 > value2 ? 1 : value1 == value2 ? 0 : -1;
     }
   },
   subcategory: {
     title: "category",
     render(subcategory) {
-      return `<span>${escapeHtml(subcategory.category.title)}</span>`;
+      let tooltip = `<div class="sortable-table-toltip"><span class="sortable-table-tooltip__category">
+          ${escapeHtml(subcategory.category.title)}
+      </span><span class="sortable-table-tooltip__subcategory">
+          / ${escapeHtml(subcategory.title)}
+        </span></div>`;
+      return `<span data-tooltip="${escapeHtml(tooltip)}">${escapeHtml(
+        subcategory.title
+      )}</span>`;
     },
     compare: null
   },
   quantity: {
     title: "quantity",
     render(quantity) {
-      return escapeHtml(String(quantity))
+      return escapeHtml(String(quantity));
     },
     compare(value1, value2) {
       return value1 - value2;
@@ -47,7 +53,7 @@ let fields = {
   sales: {
     title: "sales",
     render(sales) {
-      return escapeHtml(String(sales))
+      return escapeHtml(String(sales));
     },
     compare(value1, value2) {
       return value1 - value2;
