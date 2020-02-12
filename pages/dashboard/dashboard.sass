@@ -1,0 +1,16 @@
+.dashboard
+
+    &__charts
+        display: grid
+        grid-template-columns: repeat(3, 1fr)
+        grid-gap: 24px
+        --chart-height: 50
+
+        &_orders
+            --chart-column-color: var(--yellow-chart)
+
+        &_sales
+            --chart-column-color: var(--green-chart)
+
+        &_customers
+            --chart-column-color: var(--purple-chart)
