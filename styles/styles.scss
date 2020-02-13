@@ -5,6 +5,7 @@
 @import "../components/sortable-table/sortable-table.sass";
 @import "../components/tooltip/tooltip.sass";
 @import "../components/notification/notification.sass";
+@import "../components/range-picker/rangepicker.sass";
 
 * {
   box-sizing: border-box;
@@ -49,6 +50,19 @@ h2 {
   grid-area: content;
   background-color: $bg;
   padding: 2rem 3rem;
+
+  &__top-panel {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    flex-direction: row;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
 }
 
 .block-title {

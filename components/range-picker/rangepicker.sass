@@ -1,0 +1,133 @@
+.rangepicker
+    position: relative
+
+    &_open
+        .rangepicker__selector
+            display: inline-flex
+
+    &__input
+        display: inline-flex
+        padding: 12px 16px 12px 40px
+        cursor: pointer
+        font-weight: normal
+        font-size: 1rem
+        line-height: 20px
+        background-color: #fff
+        border: 1px solid var(--gray-light)
+        border-radius: 4px
+        outline: none
+        background: var(--white) url(../assets/icons/calendar.svg) 16px center no-repeat
+        background-size: 18px 18px
+
+    &__selector
+        display: none
+        background-color: var(--white)
+        padding: 32px 26px
+        border-radius: 6px
+        box-shadow: 0 4px 29px rgba(0, 0, 0, 0.09)
+        -webkit-box-orient: horizontal
+        -webkit-box-direction: normal
+        flex-direction: row
+        -webkit-box-pack: justify
+        justify-content: space-between
+        -webkit-box-flex: 1
+        flex: 1 0 auto
+        position: absolute
+        top: calc(100% + 16px)
+        right: 0
+        z-index: 1
+
+        &-arrow
+            width: 30px
+            height: 15px
+            position: absolute
+            bottom: 100%
+            right: 60px
+            overflow: hidden
+
+            &:after
+                content: ""
+                position: absolute
+                width: 12px
+                height: 12px
+                background: var(--white)
+                -webkit-transform: translateX(-50%) translateY(-50%) rotate(45deg)
+                transform: translateX(-50%) translateY(-50%) rotate(45deg)
+                top: 100%
+                left: 50%
+                box-shadow: 0 1px 10px rgba(0, 0, 0, 0.09)
+
+        &-control
+            position: absolute
+            top: 32px
+            width: 15px
+            height: 24px
+            display: -webkit-box
+            display: flex
+            -webkit-box-orient: vertical
+            -webkit-box-direction: normal
+            flex-direction: column
+            -webkit-box-pack: center
+            justify-content: center
+            cursor: pointer
+            -webkit-transition: 0.3s all
+            transition: 0.3s all
+            background: url(../assets/icons/arrow.svg) left center no-repeat
+            background-size: 9px 13px
+
+            &_left
+                left: 26px
+
+            &_right
+                right: 26px
+                -webkit-transform: rotate(180deg)
+                transform: rotate(180deg)
+
+    &__calendar
+        width: 252px
+
+        &:last-child
+            margin-left: 26px
+
+    &__month
+        text-align: center
+        font-weight: 600
+        font-size: 20px
+        line-height: 24px
+        padding: 0 15px
+        color: var(--dark-blue)
+
+    &__day
+        margin-top: 28px
+        display: grid
+        grid-template-columns: repeat(7, 1fr)
+
+        div
+            font-weight: 400
+            font-size: 14px
+            line-height: 20px
+            color: var(--grey)
+            text-align: center
+
+    &__date-grid
+        margin-top: 16px
+        display: grid
+        grid-template-columns: repeat(7, 1fr)
+
+    &__cell
+        position: relative
+        border: 0
+        width: 36px
+        height: 36px
+        background-color: transparent
+        color: var(--dark-blue)
+        font-weight: 400
+        font-size: 16px
+        line-height: 20px
+
+        &:hover
+            outline: none
+            background-color: var(--light-blue)
+            color: var(--dark-blue)
+            -webkit-transition: 0.2s all
+            transition: 0.2s all
