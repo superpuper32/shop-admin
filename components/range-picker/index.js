@@ -39,7 +39,6 @@ export default class Rangepicker {
     let showDate1 = new Date(this.showDateFrom);
     let showDate2 = new Date(this.showDateFrom);
     showDate2.setMonth(showDate2.getMonth() + 1);
-
     this.elem.querySelector(
       ".rangepicker__selector"
     ).innerHTML = `<div class="rangepicker__selector_arrow"></div>
@@ -48,13 +47,33 @@ export default class Rangepicker {
       ${this.renderCalendar(showDate1)}
       ${this.renderCalendar(showDate2)}
     `;
+
+    this.elem.querySelector(
+      ".rangepicker__selector-control_left"
+    ).onclick = () => this.prev();
+
+    this.elem.querySelector(
+      ".rangepicker__selector-control_right"
+    ).onclick = () => this.next();
+  }
+
+  prev() {
+    this.showDateFrom.setMonth(this.showDateFrom.getMonth() - 1);
+    this.renderSelector();
+  }
+
+  next() {
+    this.showDateFrom.setMonth(this.showDateFrom.getMonth() + 1);
+    this.renderSelector();
   }
 
   renderCalendar(showDate) {
     let date = new Date(showDate);
     date.setDate(1);
 
-    let monthStr = date.toLocaleString("default", { month: "long" });
+    let monthStr = date.toLocaleString("default", {
+      month: "long"
+    });
 
     let calendar = `<div class="rangepicker__calendar">
       <div class="rangepicker__month">
