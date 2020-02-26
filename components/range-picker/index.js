@@ -37,12 +37,16 @@ export default class Rangepicker {
 
   renderSelector() {
     let showDate1 = new Date(this.showDateFrom);
+    let showDate2 = new Date(this.showDateFrom);
+    showDate2.setMonth(showDate2.getMonth() + 1);
+
     this.elem.querySelector(
       ".rangepicker__selector"
     ).innerHTML = `<div class="rangepicker__selector_arrow"></div>
       <div class="rangepicker__selector-control rangepicker__selector-control_left"></div>
       <div class="rangepicker__selector-control rangepicker__selector-control_right"></div>
       ${this.renderCalendar(showDate1)}
+      ${this.renderCalendar(showDate2)}
     `;
   }
 
@@ -54,7 +58,7 @@ export default class Rangepicker {
 
     let calendar = `<div class="rangepicker__calendar">
       <div class="rangepicker__month">
-        <time datetime="Февраль">${monthStr}</time>
+        <time datetime="${monthStr}">${monthStr}</time>
       </div>
       <div class="rangepicker__day">
         <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Вс</div>
@@ -65,6 +69,12 @@ export default class Rangepicker {
     calendar += `<button type="button" class="rangepicker__cell" data-value="${date.toISOString()}" style="--start-from: ${this.getDay(
       date
     ) + 1}">${date.getDate()}</button>`;
+    date.setDate(2);
+
+    while (date.getMonth() === showDate.getMonth()) {
+      calendar += `<button type="button" class="rangepicker__cell" data-value="${date.toISOString()}">${date.getDate()}</button>`;
+      date.setDate(date.getDate() + 1);
+    }
 
     calendar += `</div></div>`;
 
