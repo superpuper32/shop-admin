@@ -8,3 +8,64 @@
     -webkit-box-align: center
     align-items: center
     padding: 0 60px
+
+    &__inner
+        position: relative
+        display: inline-block
+        width: 100%
+        height: 4px
+        margin: 10px 14px
+        background: var(--light-blue)
+        box-shadow: 0 0 1px var(--grey-light)
+        -moz-user-select: none
+        user-select: none
+        -ms-user-select: none
+        -webkit-user-select: none
+
+    &__progress
+        background: var(--blue)
+        position: absolute
+        top: 0
+        bottom: 0
+        left: 0
+        right: 0
+        z-index: 1
+
+    &__thumb
+        position: absolute
+        top: 50%
+        margin-top: -9px
+        height: 18px
+        width: 6px
+        background: url('./../assets/icons/range-thumb-icon.svg') left center no-repeat
+        background-size: cover
+        cursor: -webkit-grab
+        cursor: grab
+
+        &_left
+            left: 0
+            margin-left: -6px
+
+        &_right
+            right: 0
+            -webkit-transform: rotate(180deg)
+            transform: rotate(180deg)
+            margin-right: -6px
+
+    &__price
+        font-weight: 700
+        font-size: 16px
+        line-height: 24px
+        color: var(--table-grey)
+        width: 60px
+        position: absolute
+        top: 50%
+        -webkit-transform: translate(0, -50%)
+        transform: translate(0, -50%)
+
+        &_from
+            text-align: right
+            left: 0
+
+        &_to
+            right: 0

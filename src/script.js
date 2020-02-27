@@ -1,6 +1,7 @@
 import "../styles/styles.scss";
 import "babel-polyfill";
 import "../components/tooltip/index.js";
+import "../components/double-slider/index.js";
 import "../components/range-picker/index.js";
 import fetchJson from "../lib/fetch-json.js";
 import createElement from "../lib/create-element.js";
