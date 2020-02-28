@@ -34,6 +34,9 @@ export default class DoubleSlider {
     this.elems.thumbLeft.addEventListener("pointerdown", e =>
       this.onThumbPointerDown(e)
     );
+    this.elems.thumbRight.addEventListener("pointerdown", e =>
+      this.onThumbPointerDown(e)
+    );
 
     this.update();
   }
@@ -75,7 +78,7 @@ export default class DoubleSlider {
 
     if (this.dragging === this.elems.thumbLeft) {
       let newLeft =
-        (event.clientX -
+        (e.clientX -
           this.elems.inner.getBoundingClientRect().left +
           this.shiftX) /
         this.elems.inner.offsetWidth;
@@ -84,6 +87,18 @@ export default class DoubleSlider {
       let right = parseFloat(this.elems.thumbRight.style.right);
       if (newLeft + right > 100) newLeft = 100 - right;
       this.dragging.style.left = this.elems.progress.style.left = newLeft + "%";
+    } else {
+      let newRight =
+        (this.elems.inner.getBoundingClientRect().right -
+          event.clientX -
+          this.shiftX) /
+        this.elems.inner.offsetWidth;
+      if (newRight < 0) newRight = 0;
+      newRight *= 100;
+      let left = parseFloat(this.elems.thumbLeft.style.left);
+      if (left + newRight > 100) newRight = 100 - left;
+      this.dragging.style.right = this.elems.progress.style.right =
+        newRight + "%";
     }
   }
 
@@ -103,4 +118,4 @@ let slider = new DoubleSlider({
   formatValue: value => "$" + value
 });
 
-document.querySelector(".content__top-panel").append(slider.elem);
+// document.querySelector(".content__top-panel").append(slider.elem);
