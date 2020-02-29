@@ -13,7 +13,7 @@ export default class Rangepicker {
   }
 
   render() {
-    this.elem = createElement(
+    let elem = (this.elem = createElement(
       `<div class="rangepicker">
       <div class="rangepicker__input" data-elem="input">
       <span data-elem="from">${this.selected.from.toLocaleString("default", {
@@ -25,9 +25,16 @@ export default class Rangepicker {
       </div>
       <div class="rangepicker__selector" data-elem="selector"></div>
       </div>`
-    );
+    ));
 
-    this.elem.onclick = () => this.toggle();
+    elem.onmousedown = () => false;
+
+    this.elems = {};
+    for (let subElem of elem.querySelectorAll("[data-elem]")) {
+      this.elems[subElem.dataset.elem] = subElem;
+    }
+
+    this.elems.input.onclick = () => this.toggle();
   }
 
   toggle() {
@@ -39,22 +46,23 @@ export default class Rangepicker {
     let showDate1 = new Date(this.showDateFrom);
     let showDate2 = new Date(this.showDateFrom);
     showDate2.setMonth(showDate2.getMonth() + 1);
-    this.elem.querySelector(
-      ".rangepicker__selector"
-    ).innerHTML = `<div class="rangepicker__selector_arrow"></div>
+
+    this.elems.selector.innerHTML = `<div class="rangepicker__selector_arrow"></div>
       <div class="rangepicker__selector-control rangepicker__selector-control_left"></div>
       <div class="rangepicker__selector-control rangepicker__selector-control_right"></div>
       ${this.renderCalendar(showDate1)}
       ${this.renderCalendar(showDate2)}
     `;
 
-    this.elem.querySelector(
+    this.elems.selector.querySelector(
       ".rangepicker__selector-control_left"
     ).onclick = () => this.prev();
 
-    this.elem.querySelector(
+    this.elems.selector.querySelector(
       ".rangepicker__selector-control_right"
     ).onclick = () => this.next();
+
+    this.renderHiglight();
   }
 
   prev() {
@@ -65,6 +73,54 @@ export default class Rangepicker {
   next() {
     this.showDateFrom.setMonth(this.showDateFrom.getMonth() + 1);
     this.renderSelector();
+  }
+
+  renderHiglight() {
+    for (let cell of this.elem.querySelectorAll(".rangepicker__cell")) {
+      cell.classList.remove("rangepicker__selected_from");
+      cell.classList.remove("rangepicker__selected_between");
+      cell.classList.remove("rangepicker__selected_to");
+      if (
+        this.selected.from &&
+        cell.dataset.value === this.selected.from.toISOString()
+      ) {
+        cell.classList.add("rangepicker__selected_from");
+      } else if (
+        this.selected.to &&
+        cell.dataset.value === this.selected.to.toISOString()
+      ) {
+        cell.classList.add("rangepicker__selected_to");
+      } else if (
+        this.selected.from &&
+        this.selected.to &&
+        new Date(cell.dataset.value) >= this.selected.from &&
+        new Date(cell.dataset.value) <= this.selected.to
+      ) {
+        cell.classList.add("rangepicker__selected_between");
+      }
+    }
+
+    if (this.selected.from) {
+      let selectedFromElem = this.elem.querySelector(
+        `[data-value="${this.selected.from.toISOString()}"]`
+      );
+      if (selectedFromElem) {
+        selectedFromElem
+          .closest(".rangepicker__cell")
+          .classList.add("rangepicker__selected_from");
+      }
+    }
+
+    if (this.selected.to) {
+      let selectedToElem = this.elem.querySelector(
+        `[data-value="${this.selected.to.toISOString()}"]`
+      );
+      if (selectedToElem) {
+        selectedToElem
+          .closest(".rangepicker__cell")
+          .classList.add("rangepicker__selected_to");
+      }
+    }
   }
 
   renderCalendar(showDate) {
