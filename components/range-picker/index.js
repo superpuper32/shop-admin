@@ -3,6 +3,7 @@ import createElement from "../../lib/create-element.js";
 export default class Rangepicker {
   constructor({ from, to }) {
     this.showDateFrom = new Date(from);
+    this.showDateTo = new Date(to);
     this.selected = { from, to };
     this.render();
   }
