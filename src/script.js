@@ -5,7 +5,14 @@ import ProductsTable from "../components/products-table/index.js";
 
 let bestsellersTable = new ProductsTable({
   url: `https://course-js.javascript.ru/api/dashboard/bestsellers`,
-  fieldsEnabled: ["images", "title", "category", "quantity", "price", "sales"],
+  fieldsEnabled: [
+    "images",
+    "title",
+    "subcategory",
+    "quantity",
+    "price",
+    "sales"
+  ],
   order: {
     field: "title",
     direction: 1

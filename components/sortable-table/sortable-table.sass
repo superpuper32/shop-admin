@@ -59,3 +59,20 @@
         max-width: 100%
         padding: 0.25rem
         border: 1px solid $gray
+
+    &_empty
+        display: flex
+        flex-direction: column
+        height: 100%
+
+    &_loading
+        grid-template-columns: auto
+
+    &__loading-line
+        grid-column: 1 / 7
+        display: none
+        margin: 16px
+        --loading-line-height: 20px
+
+    &.sortable-table_loading .sortable-table__loading-line
+        display: grid

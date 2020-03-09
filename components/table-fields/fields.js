@@ -5,58 +5,58 @@ let fields = {
   images: {
     title: "image",
     render(src) {
-      return `<img class="sortable-table__image" src="${src[0].url}">`;
+      return `<img class="sortable-table__image" src="${src.images[0].url}">`;
     },
     compare: null
   },
   title: {
     title: "name",
-    render(title) {
-      return escapeHtml(String(title));
+    render(row) {
+      return escapeHtml(String(row.title));
     },
-    compare(value1, value2) {
-      return value1 > value2 ? 1 : value1 == value2 ? 0 : -1;
+    compare(a, b) {
+      return a.title.localeCompare(b.title);
     }
   },
   subcategory: {
     title: "category",
-    render(subcategory) {
+    render(row) {
       let tooltip = `<div class="sortable-table-toltip"><span class="sortable-table-tooltip__category">
-          ${escapeHtml(subcategory.category.title)}
+          ${escapeHtml(row.subcategory.category.title)}
       </span><span class="sortable-table-tooltip__subcategory">
-          / ${escapeHtml(subcategory.title)}
+          / ${escapeHtml(row.subcategory.title)}
         </span></div>`;
       return `<span data-tooltip="${escapeHtml(tooltip)}">${escapeHtml(
-        subcategory.title
+        row.subcategory.title
       )}</span>`;
     },
     compare: null
   },
   quantity: {
     title: "quantity",
-    render(quantity) {
-      return escapeHtml(String(quantity));
+    render(row) {
+      return escapeHtml(String(row.quantity));
     },
-    compare(value1, value2) {
-      return value1 - value2;
+    compare(a, b) {
+      return a.quantity - b.quantity;
     }
   },
   price: {
     title: "price",
-    render(price) {
-      return `$${formatMoney(+price)}`;
+    render(row) {
+      return `$${formatMoney(+row.price)}`;
     },
-    compare(value1, value2) {
-      return value1 - value2;
+    compare(a, b) {
+      return a.price - b.price;
     }
   },
   sales: {
     title: "sales",
-    render(sales) {
-      return escapeHtml(String(sales));
+    render(row) {
+      return escapeHtml(String(row.sales));
     },
-    compare(value1, value2) {
-      return value1 - value2;
+    compare(a, b) {
+      return a.sales - b.sales;
     }
   }
 };

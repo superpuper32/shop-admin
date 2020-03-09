@@ -6,6 +6,7 @@ import createElement from "../../lib/create-element.js";
 export default class SortableTable {
   constructor({ fieldsEnabled, order, url, isDynamic, emptyPlaceholder }) {
     this.fields = fields;
+    this.fieldsEnabled = fieldsEnabled;
 
     this.order = order;
 
@@ -25,17 +26,36 @@ export default class SortableTable {
       <div data-elem="header" class="sortable-table__header sortable-table__row">
         ${this.renderHeader()}
       </div>
+      <div data-elem="body" class="sortable-table__body"></div>
+      <div data-elem="loading" class="loading-line sortable-table__loading-line"></div>
+      <div data-elem="emptyPlaceholder" class="sortable-table__empty-placeholder"></div>
     </div>`);
 
-    let rows = await this.loadRows();
+    this.elems = {};
+    for (let subElem of this.elem.querySelectorAll("[data-elem]")) {
+      this.elems[subElem.dataset.elem] = subElem;
+    }
 
-    this.renderBody(rows);
+    this.elems.emptyPlaceholder.append(this.emptyPlaceholder);
+
     this.elem.addEventListener(
       "click",
       event =>
         event.target.closest(".sortable-table__header .sortable-table__cell") &&
         this.onHeaderClick(event)
     );
+
+    this.elems.header.addEventListener(
+      "pointerdown",
+      event =>
+        event.target.closest(".sortable-table__cell") && event.preventDefault()
+    );
+
+    if (this.isDynamic) {
+      window.addEventListener("scroll", event => this.onWindowScroll(event));
+    }
+
+    this.loadRows();
   }
 
   renderHeader() {
@@ -73,7 +93,20 @@ export default class SortableTable {
 
     let products = await fetchJson(this.url);
 
-    return products;
+    if (products.length === 0) {
+      this.isLoaded = true;
+    } else {
+      this.data.push(...products);
+      this.renderRows(products);
+    }
+
+    this.elem.classList.remove(`sortable-table_loading`);
+
+    if (this.isEmpty()) {
+      this.elem.classList.add("sortable-table_empty");
+    } else {
+      this.elem.classList.remove("sortable-table_empty");
+    }
   }
 
   renderBody(rows) {
@@ -96,6 +129,10 @@ export default class SortableTable {
     }
 
     this.elem.append(body);
+  }
+
+  isEmpty() {
+    return this.data.length == 0;
   }
 
   onHeaderClick(event) {
@@ -126,17 +163,56 @@ export default class SortableTable {
 
     this.order = order;
 
-    let rows = await this.loadRows();
+    if (this.isDynamic) {
+      this.data = [];
+      this.removeAllRows();
+      await this.loadRows();
+    } else {
+      let comparator = (a, b) =>
+        fields[order.field].compare(a, b) * order.direction;
 
-    let rowsArray = Array.from(rows);
+      this.data.sort(comparator);
 
-    let compare = (a, b) =>
-      this.fields[order.field].compare(a[order.field], b[order.field]) *
-      order.direction;
+      this.removeAllRows();
+      this.renderRows(this.data);
+    }
+  }
 
-    rowsArray.sort(compare);
+  removeAllRows() {
+    this.elems.body.innerHTML = "";
+  }
 
-    this.elem.lastElementChild.remove();
-    this.renderBody(rowsArray);
+  renderRowContent(row) {
+    let content = "";
+    for (let name of this.fieldsEnabled) {
+      let field = this.fields[name];
+      content += `<div class="sortable-table__cell">${field.render(row)}</div>`;
+    }
+    return content;
+  }
+
+  renderRow(row) {
+    return `<div class="sortable-table__row">${this.renderRowContent(
+      row
+    )}</div>`;
+  }
+
+  renderRows(rows) {
+    let content = ``;
+    for (let row of rows) {
+      content += this.renderRow(row);
+    }
+    this.elems.body.insertAdjacentHTML("beforeEnd", content);
+  }
+
+  onWindowScroll() {
+    if (this.isLoaded) return;
+    if (this.elem.classList.contains("sortable-table_loading")) return;
+
+    let coords = this.elem.getBoundingClientRect();
+
+    if (coords.bottom < document.documentElement.clientHeight) {
+      this.loadRows();
+    }
   }
 }
