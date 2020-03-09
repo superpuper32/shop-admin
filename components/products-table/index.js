@@ -1,4 +1,4 @@
-import SortableTable from "/components/sortable-table/index.js";
+import SortableTable from "../sortable-table/index.js";
 
 export default class ProductsTable extends SortableTable {
   renderRow(row) {

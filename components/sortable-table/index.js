@@ -3,14 +3,19 @@ import "../tooltip/index.js";
 import { fields } from "../table-fields/fields.js";
 import createElement from "../../lib/create-element.js";
 
-class SortableTable {
-  constructor(fields) {
+export default class SortableTable {
+  constructor({ fieldsEnabled, order, url, isDynamic, emptyPlaceholder }) {
     this.fields = fields;
 
-    this.order = {
-      field: "title",
-      direction: 1
-    };
+    this.order = order;
+
+    this.isDynamic = isDynamic;
+
+    this.url = new URL(url, location.href);
+
+    this.emptyPlaceholder = emptyPlaceholder;
+
+    this.data = [];
 
     this.render();
   }
@@ -58,9 +63,15 @@ class SortableTable {
   }
 
   async loadRows() {
-    let products = await fetchJson(
-      "https://course-js.javascript.ru/api/dashboard/bestsellers"
+    this.url.searchParams.set("_sort", this.order.field);
+    this.url.searchParams.set(
+      "_order",
+      this.order.direction === 1 ? "asc" : "desc"
     );
+    this.url.searchParams.set("_start", this.data.length);
+    this.url.searchParams.set("_end", this.data.length + this.pageSize);
+
+    let products = await fetchJson(this.url);
 
     return products;
   }
@@ -129,6 +140,3 @@ class SortableTable {
     this.renderBody(rowsArray);
   }
 }
-
-let table = new SortableTable(fields);
-document.body.append(table.elem);
