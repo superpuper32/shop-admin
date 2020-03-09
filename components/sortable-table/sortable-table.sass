@@ -74,5 +74,31 @@
         margin: 16px
         --loading-line-height: 20px
 
+    &__body .sortable-table__row:hover
+        background-color: var(--grey-skeleton)
+
     &.sortable-table_loading .sortable-table__loading-line
         display: grid
+
+    .sortable-table__empty-placeholder p
+        margin: 0 0 12px
+
+    &__empty-placeholder
+        display: none
+
+    &_empty .sortable-table__header
+        display: none
+
+    &_empty .sortable-table__body
+        display: none
+
+    &_empty .sortable-table__empty-placeholder
+        background: var(--grey-extra-light)
+        border: 1px solid var(--grey-light)
+        border-radius: 4px
+        flex: 1 0 auto
+        display: flex
+        flex-direction: column
+        align-items: center
+        justify-content: center
+        color: var(--grey)

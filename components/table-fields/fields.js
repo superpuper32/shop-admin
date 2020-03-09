@@ -4,8 +4,10 @@ import formatMoney from "../../lib/format-money.js";
 let fields = {
   images: {
     title: "image",
-    render(src) {
-      return `<img class="sortable-table__image" src="${src.images[0].url}">`;
+    render(row) {
+      return row.images.length
+        ? `<img class="sortable-table__image" alt="Image" src="${row.images[0].url}">`
+        : "";
     },
     compare: null
   },

@@ -18,6 +18,8 @@ export default class SortableTable {
 
     this.data = [];
 
+    this.pageSize = 30;
+
     this.render();
   }
 
@@ -185,7 +187,7 @@ export default class SortableTable {
   renderRowContent(row) {
     let content = "";
     for (let name of this.fieldsEnabled) {
-      let field = this.fields[name];
+      let field = fields[name];
       content += `<div class="sortable-table__cell">${field.render(row)}</div>`;
     }
     return content;
