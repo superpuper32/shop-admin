@@ -11,10 +11,13 @@
     "start": "parcel src/index.html",
     "build-prod": "parcel build src/index.html"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@babel/polyfill": "7.8.7"
+  },
   "devDependencies": {
     "@babel/core": "7.8.3",
     "@babel/preset-env": "7.8.3",
+    "babel-preset-env": "^1.7.0",
     "eslint": "6.8.0",
     "parcel-bundler": "1.12.4",
     "sass": "1.25.0"

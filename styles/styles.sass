@@ -1,0 +1,64 @@
+@import "./helpers/variables"
+@import "../pages/dashboard/dashboard.sass"
+
+@import "../components/main/main.sass"
+@import "../components/column-chart/column-chart.sass"
+@import "../components/double-slider/range-slider.sass"
+@import "../components/sortable-table/sortable-table.sass"
+@import "../components/tooltip/tooltip.sass"
+@import "../components/notification/notification.sass"
+@import "../components/range-picker/rangepicker.sass"
+
+*
+  box-sizing: border-box
+
+body
+  margin: 0
+  font-family: "Montserrat", sans-serif
+  font-size: 16px
+
+h1,
+h2
+  color: $primary-color
+
+.main
+  display: grid
+  grid-template-columns: 16rem 1fr
+  grid-template-rows: minmax(100vh, auto)
+  grid-template-areas: "sidebar content"
+
+.sidebar
+  grid-area: sidebar
+  background-color: $white
+  padding: 2rem
+  box-shadow: 6px 0 18px rgba(0, 0, 0, 0.06)
+  position: sticky
+
+.page-title
+  font-size: 2.5rem
+  font-weight: 600
+
+.content
+  grid-area: content
+  background-color: $bg
+  padding: 2rem 3rem
+
+  &__top-panel
+    display: -webkit-box
+    display: flex
+    -webkit-box-orient: horizontal
+    -webkit-box-direction: normal
+    flex-direction: row
+    -webkit-box-align: center
+    align-items: center
+    -webkit-box-pack: justify
+    justify-content: space-between
+    margin-bottom: 24px
+
+.block-title
+  font-size: 2rem
+  font-weight: 600
+
+  line-height: 2.5rem
+  color: $primary-color
+  margin: 3.5rem 0 2rem

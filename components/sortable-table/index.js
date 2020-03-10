@@ -65,8 +65,7 @@ export default class SortableTable {
 
     for (let name in this.fields) {
       let field = fields[name];
-      let title = `<span>${field.title.slice(0, 1).toUpperCase() +
-        field.title.slice(1)}</span>`;
+      let title = `<span>${field.title}</span>`;
 
       if (this.order.field === name) {
         title += `<span class="sortable-table__arrow">
@@ -93,6 +92,8 @@ export default class SortableTable {
     this.url.searchParams.set("_start", this.data.length);
     this.url.searchParams.set("_end", this.data.length + this.pageSize);
 
+    this.elem.classList.add(`sortable-table_loading`);
+
     let products = await fetchJson(this.url);
 
     if (products.length === 0) {
@@ -111,27 +112,27 @@ export default class SortableTable {
     }
   }
 
-  renderBody(rows) {
-    let body = document.createElement("div");
-    body.className = "sortable-table__body";
+  // renderBody(rows) {
+  //   let body = document.createElement("div");
+  //   body.className = "sortable-table__body";
 
-    for (let tableRow of rows) {
-      let row = document.createElement("a");
-      row.className = "sortable-table__row";
+  //   for (let tableRow of rows) {
+  //     let row = document.createElement("a");
+  //     row.className = "sortable-table__row";
 
-      for (let field in this.fields) {
-        let cell = document.createElement("div");
-        cell.classList.add("sortable-table__cell");
-        cell.innerHTML = `${this.fields[field].render(tableRow[field])}`;
+  //     for (let field in this.fields) {
+  //       let cell = document.createElement("div");
+  //       cell.classList.add("sortable-table__cell");
+  //       cell.innerHTML = `${this.fields[field].render(tableRow[field])}`;
 
-        row.append(cell);
-      }
+  //       row.append(cell);
+  //     }
 
-      body.append(row);
-    }
+  //     body.append(row);
+  //   }
 
-    this.elem.append(body);
-  }
+  //   this.elem.append(body);
+  // }
 
   isEmpty() {
     return this.data.length == 0;
@@ -153,6 +154,13 @@ export default class SortableTable {
       field,
       direction
     });
+  }
+
+  setUrl(url) {
+    this.url = new URL(url, location.href);
+    this.data = [];
+    this.removeAllRows();
+    this.loadRows();
   }
 
   async sort(order = this.order) {

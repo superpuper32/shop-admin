@@ -3,7 +3,7 @@ import formatMoney from "../../lib/format-money.js";
 
 let fields = {
   images: {
-    title: "image",
+    title: "Image",
     render(row) {
       return row.images.length
         ? `<img class="sortable-table__image" alt="Image" src="${row.images[0].url}">`
@@ -12,7 +12,7 @@ let fields = {
     compare: null
   },
   title: {
-    title: "name",
+    title: "Name",
     render(row) {
       return escapeHtml(String(row.title));
     },
@@ -21,7 +21,7 @@ let fields = {
     }
   },
   subcategory: {
-    title: "category",
+    title: "Category",
     render(row) {
       let tooltip = `<div class="sortable-table-toltip"><span class="sortable-table-tooltip__category">
           ${escapeHtml(row.subcategory.category.title)}
@@ -35,7 +35,7 @@ let fields = {
     compare: null
   },
   quantity: {
-    title: "quantity",
+    title: "Quantity",
     render(row) {
       return escapeHtml(String(row.quantity));
     },
@@ -44,7 +44,7 @@ let fields = {
     }
   },
   price: {
-    title: "price",
+    title: "Price",
     render(row) {
       return `$${formatMoney(+row.price)}`;
     },
@@ -53,7 +53,7 @@ let fields = {
     }
   },
   sales: {
-    title: "sales",
+    title: "Sales",
     render(row) {
       return escapeHtml(String(row.sales));
     },
