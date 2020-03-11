@@ -112,28 +112,6 @@ export default class SortableTable {
     }
   }
 
-  // renderBody(rows) {
-  //   let body = document.createElement("div");
-  //   body.className = "sortable-table__body";
-
-  //   for (let tableRow of rows) {
-  //     let row = document.createElement("a");
-  //     row.className = "sortable-table__row";
-
-  //     for (let field in this.fields) {
-  //       let cell = document.createElement("div");
-  //       cell.classList.add("sortable-table__cell");
-  //       cell.innerHTML = `${this.fields[field].render(tableRow[field])}`;
-
-  //       row.append(cell);
-  //     }
-
-  //     body.append(row);
-  //   }
-
-  //   this.elem.append(body);
-  // }
-
   isEmpty() {
     return this.data.length == 0;
   }
