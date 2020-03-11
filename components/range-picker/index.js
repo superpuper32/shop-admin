@@ -1,6 +1,6 @@
 import createElement from "../../lib/create-element.js";
 
-export default class Rangepicker {
+export default class RangePicker {
   constructor({ from, to }) {
     this.showDateFrom = new Date(from);
     this.showDateTo = new Date(to);
@@ -11,6 +11,11 @@ export default class Rangepicker {
   getDay(date) {
     let day = date.getDay();
     return day === 0 ? 6 : day - 1;
+  }
+
+  destroy() {
+    this.elem.remove();
+    document.removeEventListener("click", this.onDocumentClick);
   }
 
   render() {
@@ -36,11 +41,36 @@ export default class Rangepicker {
     }
 
     this.elems.input.onclick = () => this.toggle();
+
+    this.elems.selector.addEventListener("click", this.onSelectorClick);
+
+    document.addEventListener("click", this.onDocumentClick, true);
+  }
+
+  onDocumentClick(event) {
+    if (!this.isOpen()) return;
+    if (this.elem.contains(event.target)) return;
+    this.close();
+  }
+
+  isOpen() {
+    return this.elem.classList.contains("rangepicker_open");
+  }
+
+  open() {
+    if (this.isOpen()) {
+      return;
+    }
+    this.toggle();
   }
 
   toggle() {
     this.elem.classList.toggle("rangepicker_open");
     this.renderSelector();
+  }
+
+  close() {
+    this.elem.classList.remove("rangepicker_open");
   }
 
   renderSelector() {
@@ -156,12 +186,60 @@ export default class Rangepicker {
 
     return calendar;
   }
+
+  onSelectorClick(event) {
+    if (event.target.classList.contains("rangepicker__cell")) {
+      this.onRangePickerCellClick(event);
+      return;
+    }
+  }
+
+  getValue() {
+    return {
+      from: new Date(this.selected.from),
+      to: new Date(this.selected.to)
+    };
+  }
+
+  onRangePickerCellClick(event) {
+    let cell = event.target;
+    let value = cell.dataset.value;
+    if (!value) return;
+
+    value = new Date(value);
+
+    if (this.selectingFrom) {
+      this.selected = {
+        from: value,
+        to: null
+      };
+      this.selectingFrom = false;
+      this.renderHighlight();
+    } else {
+      if (value > this.selected.from) {
+        this.selected.to = value;
+      } else {
+        this.selected.to = this.selected.from;
+        this.selected.from = value;
+      }
+      this.selectingFrom = true;
+      this.renderHighlight();
+    }
+
+    if (this.selected.from && this.selected.to) {
+      this.elem.dispatchEvent(
+        new CustomEvent("date-select", {
+          bubbles: true,
+          detail: this.selected
+        })
+      );
+      this.close();
+      this.elems.from.innerHTML = this.selected.from.toLocaleString("default", {
+        dateStyle: "short"
+      });
+      this.elems.to.innerHTML = this.selected.to.toLocaleString("default", {
+        dateStyle: "short"
+      });
+    }
+  }
 }
-
-let range = {
-  from: new Date(Date.now() - 30 * 86400e3),
-  to: new Date()
-};
-
-let rangepicker = new Rangepicker(range);
-document.querySelector(".content__top-panel").append(rangepicker.elem);
