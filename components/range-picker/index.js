@@ -2,10 +2,16 @@ import createElement from "../../lib/create-element.js";
 
 export default class RangePicker {
   constructor({ from, to }) {
+    this.onSelectorClick = this.onSelectorClick.bind(this);
+    this.onDocumentClick = this.onDocumentClick.bind(this);
+
     this.showDateFrom = new Date(from);
-    this.showDateTo = new Date(to);
+    this.showDateFrom.setMonth(to.getMonth() - 1);
+
     this.selected = { from, to };
     this.render();
+
+    this.selectingFrom = true;
   }
 
   getDay(date) {
@@ -93,7 +99,7 @@ export default class RangePicker {
       ".rangepicker__selector-control_right"
     ).onclick = () => this.next();
 
-    this.renderHiglight();
+    this.renderHighlight();
   }
 
   prev() {
@@ -106,7 +112,7 @@ export default class RangePicker {
     this.renderSelector();
   }
 
-  renderHiglight() {
+  renderHighlight() {
     for (let cell of this.elem.querySelectorAll(".rangepicker__cell")) {
       cell.classList.remove("rangepicker__selected_from");
       cell.classList.remove("rangepicker__selected_between");
